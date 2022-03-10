@@ -17,6 +17,6 @@ host_function = Function(
 import_object.register("env", { "external_number_printer": host_function } )
 instance = Instance(module, import_object)
 
-# call WASM function.
+# call WASM function
 result = instance.exports.add(40, 2)
 print(result)
