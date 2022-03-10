@@ -10,12 +10,12 @@ store = Store()
 with open("program.wasm", "rb") as file:
     module = Module(store, file.read())
 
-import_object = ImportObject()
 host_function = Function(
     store,
     python_number_printer,
-    FunctionType([Type.I32], []) # signature
+    FunctionType([Type.I32], []) # signature: int -> void
 )
+import_object = ImportObject()
 import_object.register("env", { "external_number_printer": host_function } )
 instance = Instance(module, import_object)
 
