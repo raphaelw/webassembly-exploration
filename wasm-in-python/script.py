@@ -2,9 +2,10 @@ from wasmer import engine, Store, Module, ImportObject, \
                    Function, FunctionType, Type, Instance
 
 def python_number_printer(number):
-    print("Python Number Printer", number)
+    print("Python Number Printer:", number)
 
 store = Store()
+
 # compile the module
 with open('program.wasm', 'rb') as file:
     module = Module(store, file.read())
@@ -20,4 +21,4 @@ instance = Instance(module, import_object)
 
 # call WASM function
 result = instance.exports.add(40, 2)
-print(result)
+print("Result:", result)
