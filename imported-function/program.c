@@ -1,10 +1,10 @@
 // program.c
 
-void js_number_printer(int number);
+void external_number_printer(int number);
 
-int add(int first, int second) {
-    int result = first + second;
+int add(int a, int b) {
+    int result = a + b;
 	
-    js_number_printer(result);
+    external_number_printer(result);
     return result;
 }

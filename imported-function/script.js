@@ -5,7 +5,7 @@ function js_number_printer(number) {
 
 async function main() {
     const source = fetch('program.wasm');
-    const importObject = { env: { js_number_printer: js_number_printer } };
+    const importObject = { env: { external_number_printer: js_number_printer } };
     const { instance } = await WebAssembly.instantiateStreaming(source, importObject);
 
     const result = instance.exports.add(40, 2);
