@@ -7,7 +7,7 @@ def python_number_printer(number):
 store = Store()
 
 # compile the module
-with open('program.wasm', 'rb') as file:
+with open("program.wasm", "rb") as file:
     module = Module(store, file.read())
 
 import_object = ImportObject()
