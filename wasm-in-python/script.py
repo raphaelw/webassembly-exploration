@@ -1,4 +1,5 @@
-from wasmer import engine, Store, Module, ImportObject, Function, FunctionType, Type, Instance
+from wasmer import engine, Store, Module, ImportObject, \
+                   Function, FunctionType, Type, Instance
 
 def python_number_printer(number):
     print("Python Number Printer", number)
