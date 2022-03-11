@@ -8,7 +8,7 @@ Inspired by: https://github.com/wasmerio/wasmer-python/blob/master/examples/impo
 pip install wasmer wasmer_compiler_cranelift
 ```
 
-**Compile to wasm file with:**
+**Compile C to wasm file with:**
 
 ```sh
 clang --target=wasm32 --no-standard-libraries -Wl,--export-all -Wl,--no-entry -o program.wasm program.c
