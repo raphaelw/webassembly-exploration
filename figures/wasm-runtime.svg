@@ -13,7 +13,10 @@
    version="1.1"
    id="svg8"
    inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
-   sodipodi:docname="wasm-runtime.svg">
+   sodipodi:docname="wasm-runtime.svg"
+   inkscape:export-filename="C:\inkscape\wasm-runtime.png"
+   inkscape:export-xdpi="266.67001"
+   inkscape:export-ydpi="266.67001">
   <defs
      id="defs2">
     <marker
@@ -170,8 +173,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.4142136"
-     inkscape:cx="394.01116"
-     inkscape:cy="164.31637"
+     inkscape:cx="508.30808"
+     inkscape:cy="233.73275"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
@@ -295,8 +298,8 @@
         <rect
            style="fill:#2c5aa0;stroke:none;stroke-width:1.05833;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none"
            id="rect914"
-           width="22.620996"
-           height="5.9812016"
+           width="57.744434"
+           height="5.9812012"
            x="61.02457"
            y="53.850639" />
         <text
@@ -309,7 +312,9 @@
              y="57.833866"
              style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.52777px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#ffffff;stroke-width:0.264583"
              id="tspan918"
-             sodipodi:role="line">Instance</tspan></text>
+             sodipodi:role="line">Instance <tspan
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif"
+   id="tspan2710">of wasm file</tspan></tspan></text>
       </g>
       <text
          xml:space="preserve"
