@@ -166,6 +166,69 @@ Damit entwickelte sich Kubernetes zu einer Cloud-Technologie, die von vielen Pla
 
 Ausgehend von (Teil-)Anwendungen, welche isoliert als Container entwickelt wurden, wird bei Kubernetes der Ziel-Zustand (*desired state*) für den Betrieb der bereitgestellten Container beschrieben. Die Beschreibung erfolgt mittels YAML-Dateien, welche das sog. *"record of intent"* darstellen.
 
-![WebAssembly Concepts](figures/external/k8s-node-components-architecture.png)
+![Kubernetes](figures/external/k8s-node-components-architecture.png)
 — *Abb: Komponenten eines Kubernetes-Clusters mit zwei Nodes. Quelle: [6]*
 
+Das Kubernetes-Cluster (verteilte Hosts) besteht aus sog. Nodes. Nodes sind physikalische oder virtuelle Maschinen, auf denen letztlich die Container ausgeführt werden. Um die Ausführung der Container auf einer Node kümmert sich der Kubelet-Agent. Dieser nimmt entsprechende Befehle vom Master entgegen, die beschreiben, welche Container auf derselben Node betrieben werden sollen.
+
+An dieser Stelle kommt **[Krustlet](https://github.com/krustlet/krustlet)** ins Spiel: Krustlet ist eine spezielle Implementierung eines Kubelet-Agents, der es ermöglicht, auf WASM+WASI basierende Container auszuführen. Hier zahlt sich u.a. die Plattformunabhängigkeit von WASM aus. So muss für den Betrieb auf einer Node lediglich Krustlet installiert sein. Umgekehrt, kann auch darauf verzichtet werden, in der YAML-Spezifikation für Kubernetes mehrere Container-Images derselben Anwendung anzugeben, um unabhängig von der Rechnerarchtitektur der Nodes lauffähig zu sein. [8]
+
+Demo-Projekte sind unter [18] verfügbar.
+
+### 4.2 wasmCloud
+
+[wasmCloud](https://wasmcloud.dev/) erhöht das Abstraktionslevel noch weiter. Als Grundidee kommt hier das [Aktormodell](https://en.wikipedia.org/wiki/Actor_model) zum Einsatz. Eine Anwendung besteht hier aus *Actors* und *Capabillity Providers*. Actors enthalten die Geschäftslogik und nutzen Capabillity Providers. Ein Capabillity Provider kann z.B. eine Datenbank, eine Message Queue oder ein Webserver sein. [10]
+
+Die Komunikation zwischen den Komponenten (Actors & Capabillity Providers) wird über den Message Broker [NATS](https://nats.io/) realisiert. [11] Um die reibungslose Verarbeitung komplexer Datenstrukturen zu ermöglichen, wurde das Protokoll [waPC (WebAssembly Procedure Call)](https://wapc.io/) [13] eingeführt. Es erinnert an [Protocol Buffers](https://de.wikipedia.org/wiki/Protocol_Buffers) aus dem gRPC Umfeld. Bei waPC werden die Schnittstellen (Interfaces) und Datenstrukturen der Komponenten in der Sprache [WIDL (WebAssembly Interface Definition Language)](https://github.com/wapc/widl-spec) definiert. [12] [14]
+
+![wasm-cloud-abstraction](figures/external/cosmonic-wasm-cloud-abstraction.jpg)
+— *Abb: Entwicklung der Abstraktionsgrade im Kontext von Cloud-Technologien. Quelle: [10]*
+
+Das Aktormodell ermöglicht eine starke Entkopplung der Geschäftslogik. Folglich kann dadurch sog. Boilerplate-Code vermieden werden. [9] [10] Dies kann einen positiven Beitrag für die Developer Experience und für die Wartbarkeit von Projekten bedeuten.
+
+Empfehlenswert hierzu ist der Talk [9] mit einer Live Demo einer Web API (Spring PetClinic Beispiel).
+
+## 5. Fazit
+
+Die in diesem Artikel vorgestellten Cloud-Technologien sind zu diesem Zeitpunkt noch sehr jung und sollten deshalb eher noch nicht produktiv für wichtige Systeme eingesetzt werden. Dennoch zeigt sich, dass WebAssembly außerhalb des Browsers verschiedenste Einsatzmöglichkeiten haben kann und diese auch von verschiedensten Entwicklern und Gruppierungen erkundet werden. Insofern ist das Ende des "Mythos WebAssembly" noch nicht in Sicht. Dies liegt u.a. darin begründet, dass WebAssembly eine vergleichsweise "demokratische" Technologie ist, was in Abschnitt 2 deutlich wurde. So können Interessierte ohne großen Aufwand WebAssembly in ihr Projekt integrieren und entsprechende Schnittstellen definieren. Es bleibt also spannend.
+
+## 6. Forschungsideen
+
+-   **Developer Experience** (DX)
+    -   Zeichnet sich bei den existierenden Ansätzen schon eine Verbesserung der DX ab?
+    -   Welche weiteren Möglichkeiten bietet WASM in der Zukunft bezügl. der DX?
+-   **Cloud-Anbieter:**
+    -   Welche Cloud-Produkte werden bereits angeboten?
+    -   Vergleich bezügl. Features, Effizienz und weiterer Eigenschaften.
+-   **Edge Computing:** Die Portabilität von WASM lässt die Grenzen zwischen Service Provider Edge und User Edge verschwimmen.
+    -   Welche neue Anwendungsmöglichkeiten ergeben sich hieraus?
+    -   Wie stark kann die Dezentralisierung in diesem Zusammenhang gesteigert werden?
+    -   Vergleich mit anderen Technologien und Ansätzen im Bereich Edge Computing.
+-   **Security:** Aktueller Stand der Security in der Praxis?
+    -   Paper: [Everything Old is New Again: Binary Security of WebAssembly](https://www.unibw.de/patch/papers/usenixsecurity20-wasm.pdf)
+-   **Vergleich** von Technologien mit ähnlichen Fähigkeiten:
+    -   Java Virtual Machine bzw. [GraalVM](https://www.graalvm.org/)
+
+## Quellen
+
+Sofern nicht anders erwähnt, wurden alle Links in diesem Artikel am 28.03.2022 abgerufen.
+
+-   [1] <https://depth-first.com/articles/2019/10/16/compiling-c-to-webassembly-and-running-it-without-emscripten/>
+-   [2] <https://webassembly.org/docs/security/>
+-   [3] <https://github.com/wasmerio/wasmer-python#readme>
+-   [4] <https://docs.wasmer.io/integrations/examples/host-functions>
+-   [5] <https://de.wikipedia.org/wiki/Kubernetes>
+-   [6] <https://www.suse.com/c/rancher_blog/understanding-the-kubernetes-node/>
+-   [7] <https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/>
+-   [8] [Kubecon EU 2021 Keynote: WebAssembly & Cloud Native: Better Together](https://www.youtube.com/watch?v=OK_U1egpO6E)
+-   [9] [wasmCloud: wasm Primer Discussion, wasmCloud on the Edge Demo](https://www.youtube.com/watch?v=np3BgbPWtoE)
+-   [10] [](https://cosmonic.com/blog/cosmonic-donates-wasmcloud-to-the-cloud-native-computing-foundation/)[wasmCloud Joins Cloud Native Computing Foundation as Sandbox Project](https://cosmonic.com/blog/cosmonic-donates-wasmcloud-to-the-cloud-native-computing-foundation/)
+-   [11] <https://github.com/wasmCloud/wasmcloud-otp>
+-   [12] [wasmCloud: waPC cli -- 1/13/21 Community Call](https://www.youtube.com/watch?v=onr01cQ9xNU)
+-   [13] <https://wapc.io/docs/spec/>
+-   [14] <https://github.com/wapc/widl-spec>
+-   [15] <https://github.com/krustlet/krustlet/tree/main/demos/wasi>
+-   [16] <https://github.com/WebAssembly/WASI>
+-   [17] <https://github.com/bytecodealliance/wasmtime>
+-   [18] <https://hacks.mozilla.org/2017/02/creating-and-working-with-webassembly-modules/>
+-   [19] <https://github.com/appcypher/awesome-wasm-langs>
