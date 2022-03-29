@@ -44,7 +44,7 @@ Die Funktion `add()` gibt das Ergebnis einer Addition zurück. Zusätzlich wir
 
 Übersetzt wird der Quelltext mit einem Compiler, welcher WASM als Zielarchitektur unterstützt. In diesem Beispiel mit [Clang (LLVM Projekt)](https://clang.llvm.org/ "Clang (LLVM)") [1]:
 
-``` sh
+```
 clang --target=wasm32 --no-standard-libraries -Wl,--export-all -Wl,--no-entry -Wl,--allow-undefined -o program.wasm program.c
 ```
 
