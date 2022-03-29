@@ -27,7 +27,7 @@ Für rechenintensive Anwendungen soll [WebAssembly (WASM)](https://webassembly.
 
 Wir gehen von einem akademischen Beispiel aus, welches in der Quelltextdatei `program.c` implementiert wurde:
 
-```c
+``` c
 // program.c
 
 void external_number_printer(int number);
@@ -37,4 +37,33 @@ int add(int a, int b) {
     external_number_printer(result);
     return result;
 }
+```
+
+Die Funktion `add()` gibt das Ergebnis einer Addition zurück. Zusätzlich wird die Funktion `external_number_printer()` mit dem Ergebnis aufgerufen. Diese wird erst zur Laufzeit durch JavaScript bereitgestellt und daher in C nur deklariert.
+
+Übersetzt wird der Quelltext mit einem Compiler, welcher WASM als Zielarchitektur unterstützt. In diesem Beispiel mit [Clang (LLVM Projekt)](https://clang.llvm.org/ "Clang (LLVM)") [1]:
+
+``` sh
+clang --target=wasm32 --no-standard-libraries -Wl,--export-all -Wl,--no-entry -Wl,--allow-undefined -o program.wasm program.c
+```
+
+Ergebnis ist die Bytecode-Datei `program.wasm`. Diese kann in JavaScript geladen werden, um die Funktion `add()` auszuführen. Die Funktion `external_number_printer()` wird dabei per `importObject` bereitgestellt.
+
+``` javascript
+// script.js
+
+function js_number_printer(number) {
+    console.log('JS Number Printer: ' + number);
+}
+
+async function main() {
+    const source = fetch('program.wasm');
+    const importObject = { env: { external_number_printer: js_number_printer } };
+    const { instance } = await WebAssembly.instantiateStreaming(source, importObject);
+
+    const result = instance.exports.add(40, 2); // call webassembly function
+    console.log('Result: ' + result);
+}
+
+main();
 ```
