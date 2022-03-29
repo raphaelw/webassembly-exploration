@@ -21,6 +21,7 @@ Die gestiegene Popularität und weite Verbreitung von JavaScript (JS) innerhalb 
 Für rechenintensive Anwendungen soll [WebAssembly (WASM)](https://webassembly.org/ "WebAssembly (WASM)") Abhilfe schaffen. Bei der Technologie handelt es sich um ein Bytecode-Format für eine entsprechende virtuelle Maschine (VM). WASM wurde so konzipiert, dass performante Sprachen wie z.B. [C/C++, Rust, AssemblyScript oder TinyGo](https://github.com/appcypher/awesome-wasm-langs "C/C++, Rust oder TinyGo") [19] für diese VM kompiliert werden können. Am Ende erhält man eine wasm-Datei, die den Bytecode enthält und in JavaScript dann über die [WebAssembly API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly "WebAssembly API") des Browsers (bzw. der JS Engine) geladen und ausgeführt werden kann. Das Minimalbeispiel im folgenden Kapitel soll den Workflow verdeutlichen.
 
 ![WebAssembly Compiler Target, Lin Clark](figures/external/lin-clark-compiler-target.png)
+
 — *Abb: Verschiedenste Sprachen können zu WebAssembly Bytecode kompiliert werden. Zeichnung von [Lin Clark](https://hacks.mozilla.org/2017/02/creating-and-working-with-webassembly-modules/) [18]*
 
 ### 1.2. Workflow / Beispielprojekt
@@ -80,6 +81,7 @@ Die erste Zeile wird von der Funktion `js_number_printer()` erzeugt, welche vo
 ### 1.3. Weitere Eigenschaften & Konzepte
 
 ![WebAssembly Concepts](figures/wasm-runtime.png)
+
 — *Abb: Zusammenhänge der wichtigsten Konzepte*
 
 -   **Guest & Host:** Im obigen Beispiel nimmt der Browser (bzw. die JS Engine) die Rolle des Hosts ein. Guest ist das WASM-Programm.
@@ -167,6 +169,7 @@ Damit entwickelte sich Kubernetes zu einer Cloud-Technologie, die von vielen Pla
 Ausgehend von (Teil-)Anwendungen, welche isoliert als Container entwickelt wurden, wird bei Kubernetes der Ziel-Zustand (*desired state*) für den Betrieb der bereitgestellten Container beschrieben. Die Beschreibung erfolgt mittels YAML-Dateien, welche das sog. *"record of intent"* darstellen.
 
 ![Kubernetes](figures/external/k8s-node-components-architecture.png)
+
 — *Abb: Komponenten eines Kubernetes-Clusters mit zwei Nodes. Quelle: [6]*
 
 Das Kubernetes-Cluster (verteilte Hosts) besteht aus sog. Nodes. Nodes sind physikalische oder virtuelle Maschinen, auf denen letztlich die Container ausgeführt werden. Um die Ausführung der Container auf einer Node kümmert sich der Kubelet-Agent. Dieser nimmt entsprechende Befehle vom Master entgegen, die beschreiben, welche Container auf derselben Node betrieben werden sollen.
@@ -182,6 +185,7 @@ Demo-Projekte sind unter [18] verfügbar.
 Die Komunikation zwischen den Komponenten (Actors & Capabillity Providers) wird über den Message Broker [NATS](https://nats.io/) realisiert. [11] Um die reibungslose Verarbeitung komplexer Datenstrukturen zu ermöglichen, wurde das Protokoll [waPC (WebAssembly Procedure Call)](https://wapc.io/) [13] eingeführt. Es erinnert an [Protocol Buffers](https://de.wikipedia.org/wiki/Protocol_Buffers) aus dem gRPC Umfeld. Bei waPC werden die Schnittstellen (Interfaces) und Datenstrukturen der Komponenten in der Sprache [WIDL (WebAssembly Interface Definition Language)](https://github.com/wapc/widl-spec) definiert. [12] [14]
 
 ![wasm-cloud-abstraction](figures/external/cosmonic-wasm-cloud-abstraction.jpg)
+
 — *Abb: Entwicklung der Abstraktionsgrade im Kontext von Cloud-Technologien. Quelle: [10]*
 
 Das Aktormodell ermöglicht eine starke Entkopplung der Geschäftslogik. Folglich kann dadurch sog. Boilerplate-Code vermieden werden. [9] [10] Dies kann einen positiven Beitrag für die Developer Experience und für die Wartbarkeit von Projekten bedeuten.
