@@ -103,6 +103,7 @@ Folgendes Python-Script kann dann ähnlich zur JavaScript-Variante den Bytecode 
 
 ``` python
 # script.py
+
 from wasmer import engine, Store, Module, ImportObject, \
                    Function, FunctionType, Type, Instance
 
@@ -149,8 +150,22 @@ Das Beispiel aus 1.2 enthält ein wichtiges Detail: Der Compiler-Befehl enthält
 
 Die aufgeführten Beispiele werden in der normalen "C-Welt" üblicherweise durch sog. [*Syscall*s (Systemaufrufe)](https://de.wikipedia.org/wiki/Systemaufruf) realisiert. Programme können mit Syscalls das Betriebssystem aufrufen, um auf bestimmte Funktionalitäten zuzugreifen. Dies ermöglicht z.B. den einfachen Umgang mit Dateien, ohne dass das Programm selbst Funktionalitäten wie Treiber für Festplatten und Dateisysteme mitbringen muss.
 
-Um WASM Programme mit solchen Funktionalitäten auszustatten, wurde das [**WebAssembly System Interface (WASI)**](https://github.com/WebAssembly/WASI) ins Leben gerufen. WASI spezifiziert Schnittstellen für solche Funktionalitäten, die über das Number Crunching hinausgehen. Z.B. die Schnittstelle zum Öffnen von Dateien "[`[open-at]`](https://github.com/WebAssembly/wasi-filesystem/blob/bdbfecf90170a94f5bc4219fdb43839dd6953642/wasi-filesystem.abi.md#-descriptoropen-at)". Damit ist es möglich mit [wasi-libc](https://github.com/WebAssembly/wasi-libc) die C-Standard-Bibliothek für WASM Projekte zu nutzen. [16]
+Um WASM Programme mit solchen Funktionalitäten auszustatten, wurde das [**WebAssembly System Interface (WASI)**](https://github.com/WebAssembly/WASI) ins Leben gerufen. WASI spezifiziert Schnittstellen für solche Funktionalitäten, die über das Number Crunching hinausgehen. Z.B. die Schnittstelle zum Öffnen von Dateien [`open-at`](https://github.com/WebAssembly/wasi-filesystem/blob/bdbfecf90170a94f5bc4219fdb43839dd6953642/wasi-filesystem.abi.md#-descriptoropen-at). Damit ist es möglich mit [wasi-libc](https://github.com/WebAssembly/wasi-libc) die C-Standard-Bibliothek für WASM Projekte zu nutzen. [16]
 
 WASM-Programme, welche WASI nutzen, können ausgeführt werden, indem die Runtime die entsprechenden spezifizierten Schnittstellen als importierte Funktionen bereitstellt. Ein Beispiel für eine WASI-kompatible Runtime ist *[wasmtime](https://github.com/bytecodealliance/wasmtime)*. Mit *wasmtime* können WASM-Programme direkt "standalone" ausgeführt werden. Damit wird deutlich, dass hier weitere Arten von Isolation realisiert werden können. So kann einerseits vom WASM-Host festgelegt werden, welche Funktionalitäten von WASI überhaupt bereitgestellt werden. Des Weiteren können Systemschnitstellen wie z.B. das Dateisystem einfach virtualisiert werden, indem das Verhalten der Datei-Schnittstellen entsprechend angepasst wird. Z.B. könnte man das Dateisystem der VM in ein Verzeichnis des Hosts oder in eine Datenbank abbilden. [17]
 
 Damit stehen die Grundlagen für die Containervirtualisierung bereit. Dadurch wird auch nachvollziehbar, weshalb Solomon Hykes in seinem Tweet WASM/WASI mit Docker in Zusammenhang brachte.
+
+## 4. WASM in der Cloud
+
+### 4.1 Einsatz in Kubernetes durch Krustlet
+
+*"Kubernetes [...] ist ein Open-Source-System zur Automatisierung der Bereitstellung, Skalierung und Verwaltung von Container-Anwendungen [...]. Es zielt darauf ab, eine 'Plattform für das automatisierte Bespielen, Skalieren und Warten von Anwendungscontainern auf verteilten Hosts' zu liefern." [5]*
+
+Damit entwickelte sich Kubernetes zu einer Cloud-Technologie, die von vielen Plattformen wie Microsofts Azure, IBM Cloud, Red Hats OpenShift, Amazons EKS, Googles Kubernetes Engine und Oracles OCI unterstützt wird. [5]
+
+Ausgehend von (Teil-)Anwendungen, welche isoliert als Container entwickelt wurden, wird bei Kubernetes der Ziel-Zustand (*desired state*) für den Betrieb der bereitgestellten Container beschrieben. Die Beschreibung erfolgt mittels YAML-Dateien, welche das sog. *"record of intent"* darstellen.
+
+![WebAssembly Concepts](figures/external/k8s-node-components-architecture.png)
+— *Abb: Komponenten eines Kubernetes-Clusters mit zwei Nodes. Quelle: [6]*
+
