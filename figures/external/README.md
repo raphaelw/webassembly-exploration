@@ -1,0 +1,1 @@
+Images copied from various sources. See markdown articles in this repo for their sources.
